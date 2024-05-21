@@ -1,4 +1,4 @@
-import { processDateString } from '@/utils/dateUtilsMMDD'
+import { processDateString, processShortDateString } from '@/utils/dateUtilsMMDD'
 export function format(input: InputSpec): OutputSpec {
   // M M / D D / Y Y Y Y
   // 0 1 2 3 4 5 6 7 8 9  = 10
@@ -13,21 +13,24 @@ export function format(input: InputSpec): OutputSpec {
   if (input.newString.length === 0) return { newString: '', selectionStart: null }
 
   // string is DATE
-  const parsedDate = processDateString(input.newString)
-  if (parsedDate.length > 0) return { newString: parsedDate, selectionStart: parsedDate.length }
+  if (input.newString.length === 10) {
+    const parsedDate = processDateString(input.newString)
+    if (parsedDate.length > 0) return { newString: parsedDate, selectionStart: parsedDate.length }
+  }
 
   //
 
-  if (parsedDate)
-    if (input.newString.length === input.oldString.length + 1) {
-      //  CORRECT string and one symbol ADDED
-      const output: OutputSpec = {
-        newString: processAdd(input, divider, placeholder),
-        selectionStart: null
-      }
-      output.selectionStart = output.newString.length
-      return output
+  // if (parsedDate)
+
+  if (input.newString.length === input.oldString.length + 1) {
+    //  CORRECT string and one symbol ADDED
+    const output: OutputSpec = {
+      newString: processAdd(input, divider, placeholder),
+      selectionStart: null
     }
+    output.selectionStart = output.newString.length
+    return output
+  }
 
   //  CORRECT string and one symbol DELETED
   if (input.newString.length === input.oldString.length - 1) {
@@ -94,14 +97,29 @@ function processAdd(input: InputSpec, divider: string, placeholder: string) {
     else resultString = input.oldString
   }
   if (input.newString.length === 5) {
+    console.log('processAdd', input.newString.length)
     const arr = input.newString.split(divider)
-    if (testDayTwo(arr[1])) resultString = input.newString + divider
-    else resultString = input.oldString
+    if (testDayTwo(arr[1])) {
+      console.log('===', input.newString, processShortDateString(input.newString))
+      // resultString = input.newString + divider
+      if (processShortDateString(input.newString).length > 0)
+        resultString = input.newString + divider
+      else resultString = input.oldString
+    } else resultString = input.oldString
+    /////// !!!!!!!!
   }
-  if (input.newString.length > 6) {
+  if (input.newString.length > 6 && input.newString.length < 10) {
     const arr = input.newString.split(divider)
     if (testYearAny(arr[2])) resultString = input.newString
     else resultString = input.oldString
+  }
+
+  if (input.newString.length === 10) {
+    const arr = input.newString.split(divider)
+    if (testYearAny(arr[2])) {
+      if (processShortDateString(input.newString).length > 0) resultString = input.newString
+      else resultString = input.oldString
+    } else resultString = input.oldString
   }
 
   if (input.newString.length === 11) {

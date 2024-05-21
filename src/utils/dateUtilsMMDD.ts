@@ -19,7 +19,7 @@ export function processDateString(dateString: string): string {
   }
 }
 
-function parseISODate(dateString: string) {
+export function parseISODate(dateString: string) {
   const isoRegex = /^(\d{4})-(\d{2})-(\d{2})$/
   const match = dateString.match(isoRegex)
   if (match) {
@@ -63,4 +63,13 @@ export function parseEuropeanDate(dateString: string) {
     return new Date(year, month, day)
   }
   return null
+}
+
+export function processShortDateString(dateString: string): string {
+  if (dateString.length !== 5) return ''
+
+  const shortRegex = /^(\d{2})\/(\d{2})$/
+  if (!dateString.match(shortRegex)) return ''
+
+  return processDateString(dateString + '/1804')
 }

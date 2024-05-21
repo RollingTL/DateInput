@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import InputDateDualLocale from '@/components/InputDateDualLocale.vue'
-import { processDateString, parseAmericanDate, parseEuropeanDate } from '@/utils/dateUtilsMMDD'
+import { format } from '@/utils/dateProcess'
 import { ref } from 'vue'
 
 // "YYYY-MM-DD"
@@ -9,11 +9,20 @@ import { ref } from 'vue'
 // Europe  DD//MM/YYYY
 const dataString = ref<string>('')
 
-// console.log(parseAmericanDate('13/01/2023'))
-console.log(processDateString('13/01/2023'))
-// console.log(parseAmericanDate('05/19/2024'))
-// console.log(processDateString('19/05/2024'))
-// console.log(processDateString('05/19/2024'))
+// console.log(
+//   format({
+//     oldString: '',
+//     newString: '13/01/2023',
+//     selectionStart: 0
+//   })
+// )
+// console.log(
+//   format({
+//     oldString: '',
+//     newString: '1',
+//     selectionStart: 0
+//   })
+// )
 </script>
 
 <template>
@@ -27,11 +36,21 @@ console.log(processDateString('13/01/2023'))
     <br />
     <br />
     <input type="text" />
+    <br />
+    <br />
+    <div>
+      <h3>05/19/2024</h3>
+      <h3>02/29/2024</h3>
+      <h3>31/12/1899</h3>
+    </div>
   </main>
 </template>
 
 <style scoped>
 header {
+  font-size: 18px;
+}
+main {
   font-size: 18px;
 }
 </style>
