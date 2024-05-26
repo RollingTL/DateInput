@@ -1,22 +1,19 @@
-export function processDateString(dateString: string): string {
+export function processDateString(dateString: string): DateObject | null {
+  // return american
   let date = parseISODate(dateString)
   if (!date) {
-    date = parseEuropeanDate(dateString) // Prioritize European format
+    date = parseEuropeanDate(dateString)
   }
   if (!date) {
     date = parseAmericanDate(dateString)
   }
-  if (!date) return ''
+  if (!date) return null
 
   const month = String(date.getMonth() + 1).padStart(2, '0')
   const day = String(date.getDate()).padStart(2, '0')
   const year = date.getFullYear()
 
-  if (year >= 1900 && year <= 2099) {
-    return `${month}/${day}/${year}`
-  } else {
-    return `${month}/${day}/`
-  }
+  return { month, day, year }
 }
 
 export function parseISODate(dateString: string) {
@@ -63,13 +60,4 @@ export function parseEuropeanDate(dateString: string) {
     return new Date(year, month, day)
   }
   return null
-}
-
-export function processShortDateString(dateString: string): string {
-  if (dateString.length !== 5) return ''
-
-  const shortRegex = /^(\d{2})\/(\d{2})$/
-  if (!dateString.match(shortRegex)) return ''
-
-  return processDateString(dateString + '/1804')
 }

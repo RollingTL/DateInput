@@ -37,3 +37,15 @@ npm run build
 ```sh
 npm run lint
 ```
+
+Test assignment for Frontend Developers
+Create a Vue@3 component for date input with a mask that will change depending on the browser locale.If the browser locale is "en_US", the input mask should be "MM/DD/YYYY", in any other cases, it should be "DD/MM/YYYY".
+
+Input mask means that it should not allow user to input anything that is not a valid date. See examples here: https://imask.js.org/
+The v-model binding should always be of this format: "YYYY-MM-DD";
+The component must utilize Vue@3.x and it's composition API;
+The component must be written in TypeScript;
+The component must be SSR friendly;
+Write at least 3 tests for the component.
+You can use any date formatting library, like dayjs or moment js. Any other dependencies are prohibited.
+You can upload your code to github and send us a link for evaluation.

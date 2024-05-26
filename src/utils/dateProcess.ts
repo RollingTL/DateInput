@@ -1,4 +1,4 @@
-import { processDateString, processShortDateString } from '@/utils/dateUtilsMMDD'
+import { processDateString, processShortDateString } from '@/utils/dateUtils'
 export function format(input: InputSpec): OutputSpec {
   // M M / D D / Y Y Y Y
   // 0 1 2 3 4 5 6 7 8 9  = 10
@@ -6,19 +6,20 @@ export function format(input: InputSpec): OutputSpec {
   // 1 2 3 4 5 6 7 8 9 10
   const divider = '/'
   const placeholder = '_'
+  const { oldString, newString, selectionStart } = input
+  const prevLen = oldString.length
+  const newLen = newString.length
 
   // CHECK STRING
 
   // string EMPTY
   if (input.newString.length === 0) return { newString: '', selectionStart: null }
-
+  //
   // string is DATE
   if (input.newString.length === 10) {
     const parsedDate = processDateString(input.newString)
-    if (parsedDate.length > 0) return { newString: parsedDate, selectionStart: parsedDate.length }
+    if (parsedDate.length === 0) return { newString: parsedDate, selectionStart: parsedDate.length }
   }
-
-  //
 
   // if (parsedDate)
 
