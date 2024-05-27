@@ -1,3 +1,4 @@
+//
 export function processDateString(dateString: string): DateObject | null {
   // return american
   let date = parseISODate(dateString)
