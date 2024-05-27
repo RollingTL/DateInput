@@ -47,7 +47,6 @@ const onInput = (e: Event) => {
 </script>
 <template>
   <input ref="inputElement" type="text" :value="props.modelValue" @input="onInput" />
-  <br />
 </template>
 
 <style scoped>

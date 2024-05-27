@@ -1,4 +1,4 @@
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref } from 'vue'
 import { findSymbolChange } from '@/utils/symbolDiff'
 import { parseAmericanDate, parseEuropeanDate } from '../utils/dateUtils'
 // M M / D D / Y Y Y Y
@@ -14,7 +14,6 @@ export function useDateDualLocale() {
   const dayStr = ref(placeholder + placeholder)
   const monthStr = ref(placeholder + placeholder)
   const yearStr = ref(placeholder + placeholder + placeholder + placeholder)
-  const normalLength = 10
 
   const previous = ref('')
   const cursor = ref<number | null>(null)

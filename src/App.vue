@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import InputDateDualLocale from '@/components/InputDateDualLocale.vue'
-import { format } from '@/utils/dateProcess'
 
 import { ref } from 'vue'
 
@@ -9,21 +8,6 @@ import { ref } from 'vue'
 // America MM/DD/YYYY
 // Europe  DD//MM/YYYY
 const dataString = ref<string>('')
-
-// console.log(
-//   format({
-//     oldString: '',
-//     newString: '13/01/2023',
-//     selectionStart: 0
-//   })
-// )
-// console.log(
-//   format({
-//     oldString: '',
-//     newString: '1',
-//     selectionStart: 0
-//   })
-// )
 </script>
 
 <template>
