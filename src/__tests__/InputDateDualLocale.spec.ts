@@ -14,68 +14,59 @@ describe('InputDateDualLocale', () => {
     })
     expect(wrapper.find('input').exists()).toBeTruthy()
   })
-  test('Must contain one input element', async () => {
+  test('Should set empty on init', async () => {
     const wrapper = await mount(InputDateDualLocale, {
       propsData: {
         locale: 'en-US',
         modelValue: ''
       }
     })
-    // wrapper.find('input').setValue('')
-    // await wrapper.vm.$nextTick()
-    // expect(wrapper.find('input').element.value).toBe('__/__/____')
+
+    // wrapper.find('input').setValue('1__/__/____')
+    await wrapper.vm.$nextTick()
+    expect(wrapper.find('input').element.value).toBe('__/__/____')
+    expect(wrapper.emitted('update:modelValue')).toStrictEqual([['____-__-__']])
+  })
+
+  test('Should accept input', async () => {
+    const wrapper = await mount(InputDateDualLocale, {
+      propsData: {
+        locale: 'en-US',
+        modelValue: ''
+      }
+    })
     wrapper.find('input').setValue('1__/__/____')
     await wrapper.vm.$nextTick()
+    //
     expect(wrapper.find('input').element.value).toBe('1_/__/____')
+    const emitted = wrapper.emitted('update:modelValue')
+    expect(emitted).toBeDefined()
+    if (emitted) {
+      expect(Array.isArray(emitted)).toBe(true)
+      expect(emitted.length).toBe(2)
+      expect(emitted[0]).toEqual(['____-__-__'])
+      expect(emitted[1]).toEqual(['____-1_-__'])
+    }
   })
-  // ////////////////////
-  // test('Initial value is set', async () => {
-  //   const wrapper = await mount(InputDateDualLocale, {
-  //     propsData: {
-  //       locale: 'en-US',
-  //       modelValue: ''
-  //     }
-  //   })
-  //   wrapper.setProps({
-  //     'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e })
-  //   })
-  //   expect(wrapper.props('modelValue')).toBe('__/__/____')
-  // })
-  ////////////////////
-  // test('Initial input works', async () => {
-  //   const wrapper = await mount(InputDateDualLocale, {
-  //     propsData: {
-  //       locale: 'en-US',
-  //       modelValue: ''
-  //     }
-  //   })
-  //   const input = await wrapper.find('input')
-  //   console.log(input['wrapperElement'].value)
 
-  //   wrapper.vm.onVnodeMounted = async () => {
-  //     console.log('==========')
-
-  //     const input = await wrapper.find('input')
-  //     console.log(input)
-
-  //     input.element.value = '++++'
-  //     input.trigger('input')
-  //     console.log(input['wrapperElement'].value)
-  //     expect(input.element.value).toBe('__')
-  //   }
-  // })
-  ////////////////////
-  // test('Initial value input', async () => {
-  //   const wrapper = mount(InputDateDualLocale, {
-  //     propsData: {
-  //       locale: 'en-US',
-  //       modelValue: '__/__/____'
-  //     }
-  //   })
-  //   wrapper.setProps({
-  //     'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e })
-  //   })
-  //   wrapper.find('input').setValue('1__/__/____')
-  //   expect(wrapper.props('modelValue')).toBe('__/__/____')
-  // })
+  test('Should ignore wrong input', async () => {
+    const wrapper = await mount(InputDateDualLocale, {
+      propsData: {
+        locale: 'en-US',
+        modelValue: ''
+      }
+    })
+    wrapper.find('input').setValue('2__/__/____')
+    await wrapper.vm.$nextTick()
+    //
+    expect(wrapper.find('input').element.value).toBe('__/__/____')
+    const emitted = wrapper.emitted('update:modelValue')
+    expect(emitted).toBeDefined()
+    if (emitted) {
+      expect(Array.isArray(emitted)).toBe(true)
+      expect(emitted.length).toBe(2)
+      expect(emitted[0]).toEqual(['____-__-__'])
+      expect(emitted[1]).toEqual(['____-__-__'])
+    }
+  })
 })

@@ -17,6 +17,10 @@ export function useDateDualLocale() {
 
   const previous = ref('')
   const cursor = ref<number | null>(null)
+
+  function setLocale(input: string) {
+    locale.value = input
+  }
   function set(input: TextInputData) {
     if (input.str === '') {
       dayStr.value = placeholder + placeholder
@@ -36,11 +40,11 @@ export function useDateDualLocale() {
     //
     let newStr = ''
     if (diff.changedFrom === '' && diff.changedTo !== '') {
-      console.log('INSERT ------------------------------------!!!')
+      // INSERT ------------------------------------!!!
       newStr = diff.start + diff.changedTo + diff.end.slice(1)
     }
     if (diff.changedFrom !== '' && diff.changedTo === '') {
-      console.log('DELETE ------------------------------------!!!', diff)
+      // DELETE ------------------------------------!!!
       if (diff.changedFrom === placeholder) return
       if (diff.changedFrom === divider) {
         newStr = diff.start.slice(0, -1) + placeholder + divider + diff.end
@@ -53,7 +57,7 @@ export function useDateDualLocale() {
       }
     }
     if (diff.changedFrom !== '' && diff.changedTo !== '') {
-      console.log('CHANGE ------------------------------------!!!')
+      // CHANGE ------------------------------------!!!
       newStr = diff.start + diff.changedTo + diff.end
     }
     ///////////////////////////////////////////////////////
@@ -74,6 +78,7 @@ export function useDateDualLocale() {
     if (!testMonth(newMonth)) return
     if (!testDay(newDay)) return
     if (!testYear(newYear)) return
+    if (!testFeb(newDay, newMonth)) return
 
     if ((newDay + newMonth).indexOf(placeholder) === -1) {
       let dummyYear = ''
@@ -109,6 +114,12 @@ export function useDateDualLocale() {
     const regex = /^____$|^[12]___$|^(19|20)__$|^(19|20)\d_$|^(19|20)\d\d$/
     return regex.test(str)
   }
+  function testFeb(day: string, month: string): boolean {
+    if (month === '02') {
+      if (day[0] === '3') return false
+    }
+    return true
+  }
   function get(): TextInputData {
     let str: string
     if (locale.value === 'en-US') {
@@ -121,5 +132,5 @@ export function useDateDualLocale() {
     return { str: str, cursor: newCursorPosition }
   }
 
-  return { set, get }
+  return { set, get, setLocale }
 }
